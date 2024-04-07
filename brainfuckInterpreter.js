@@ -62,7 +62,5 @@ const tokenizer = function (content, input) {
   }
 }
 
-// +++++++++[>++++++++<-]>++++.>++++++++++[>++++++++++<-]>+.>+++++++++++[>++++++++++<-]>.>++++++++++[>++++++++++<-]>+++++.
-
 tokenizer(getFileContent(), "")
 console.log(output)
