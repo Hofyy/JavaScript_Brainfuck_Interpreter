@@ -15,7 +15,7 @@ for (let i = 0; i < 100; i++) {
   data.push(0);
 }
 
-const tokenizer = function (content, input) {
+const interpret = function (content, input) {
   while (position < content.length) {
     const currentChar = content[position];
 
@@ -62,5 +62,5 @@ const tokenizer = function (content, input) {
   }
 }
 
-tokenizer(getFileContent(), "")
+interpret(getFileContent(), "")
 console.log(output)
