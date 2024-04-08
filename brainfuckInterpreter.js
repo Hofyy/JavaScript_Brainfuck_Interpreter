@@ -62,5 +62,5 @@ const interpret = function (content, input) {
   }
 }
 
-interpret(getFileContent(), "")
+interpret(input, "")
 console.log(output)
