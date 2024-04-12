@@ -37,13 +37,6 @@ const setInputData = (input, inputPosition, data, cursorPosition) => {
 }
 
 const tokenizer = function (content, input) {
-  let position = 0;
-  let cursorPosition = 0;
-  let data = Array(100).fill(0);
-  let loops = [];
-  let inputPosition = 0;
-  let output = "";
-
   while (position < content.length) {
     const currentChar = content[position];
 
@@ -85,9 +78,9 @@ const tokenizer = function (content, input) {
 
     position++;
   }
-
-  return output; // Return the output string
 }
 
-const output = tokenizer(getFileContent(), "");
-console.log(output);
+// +++++++++[>++++++++<-]>++++.>++++++++++[>++++++++++<-]>+.>+++++++++++[>++++++++++<-]>.>++++++++++[>++++++++++<-]>+++++.
+
+tokenizer(getFileContent(), "")
+console.log(output)
