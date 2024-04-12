@@ -1,40 +1,66 @@
 const fs = require('fs');
 
-const getFileContent = function () {
+
+
+// Function to use Brainfuck with fs
+/* const getFileContent = function () {
   return fs.readFileSync("./test.bf", { encoding: "utf8" });
+} */
+
+// Decrement data on cursor position
+const decrementData = function (data, cursorPosition) {
+  data[cursorPosition]--;
 }
 
-let position = 0;
-let cursorposition = 0;
-let data = [];
-let loops = [];
-let inputPosition = 0;
-var output = ""
+// Increment data on cursor position
+const incrementData = function (data, cursorPosition) {
+  data[cursorPosition]++;
+}
 
-for (let i = 0; i < 100; i++) {
-  data.push(0);
+// Move cursor left
+const moveLeft = function (cursorPosition) {
+  cursorPosition--
+  return cursorPosition
+}
+
+// Move cursor right
+const moveRight = function (cursorPosition) {
+  cursorPosition++
+  return cursorPosition
+}
+
+// Read input and convert to Ascii value
+const setInputData = (input, inputPosition, data, cursorPosition) => {
+  const ascii = input[inputPosition]?.charCodeAt(0) || 0;
+  data[cursorPosition] = ascii;
+  return inputPosition + 1;
 }
 
 const tokenizer = function (content, input) {
+  let position = 0;
+  let cursorPosition = 0;
+  let data = Array(100).fill(0);
+  let loops = [];
+  let inputPosition = 0;
+  let output = "";
+
   while (position < content.length) {
     const currentChar = content[position];
 
     if (currentChar == "<") {
-      cursorposition--;
+      cursorPosition = moveLeft(cursorPosition)
     } else if (currentChar == ">") {
-      cursorposition++;
+      cursorPosition = moveRight(cursorPosition)
     } else if (currentChar == ",") {
       if (input) {
-        let ascii = input[inputPosition].charCodeAt(0)
-        data[cursorposition] = ascii
-        inputPosition++
+        inputPosition = setInputData(input, inputPosition, data, cursorPosition);
       }
     } else if (currentChar == "+") {
-      data[cursorposition]++;
+      incrementData(data, cursorPosition)
     } else if (currentChar == "-") {
-      data[cursorposition]--;
+      decrementData(data, cursorPosition)
     } else if (currentChar == "[") {
-      if (data[cursorposition] === 0) {
+      if (data[cursorPosition] === 0) {
         let loopDepth = 1;
         while (loopDepth !== 0) {
           position++;
@@ -45,24 +71,23 @@ const tokenizer = function (content, input) {
         loops.push(position);
       }
     } else if (currentChar == "]") {
-      if (data[cursorposition] !== 0) {
+      if (data[cursorPosition] !== 0) {
         position = loops[loops.length - 1];
       } else {
         loops.pop();
       }
     } else if (currentChar == ".") {
-      const asciiCode = data[cursorposition];
+      const asciiCode = data[cursorPosition];
       const string = String.fromCharCode(asciiCode);
-      output += string
+      output += string;
     } else {
-      content[position] = ""
     }
 
     position++;
   }
+
+  return output; // Return the output string
 }
 
-// +++++++++[>++++++++<-]>++++.>++++++++++[>++++++++++<-]>+.>+++++++++++[>++++++++++<-]>.>++++++++++[>++++++++++<-]>+++++.
-
-tokenizer(getFileContent(), "")
-console.log(output)
+const output = tokenizer(getFileContent(), "");
+console.log(output);
