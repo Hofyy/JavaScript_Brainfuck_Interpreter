@@ -37,6 +37,11 @@ const setInputData = (input, inputPosition, data, cursorPosition) => {
 }
 
 const tokenizer = function (content, input) {
+  let cursorPosition = 0;
+  let data = Array(100).fill(0);
+  let inputPosition = 0;
+  let output = "";
+
   while (position < content.length) {
     const currentChar = content[position];
 
